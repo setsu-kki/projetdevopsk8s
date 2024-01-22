@@ -21,7 +21,7 @@ jobs:
     - name: Set up k3s kubectl
       uses: rancher/k3s-kubectl-action@v1
       with:
-      k3s_version: 'latest'
+        k3s_version: 'latest'
  
     - name: Create Namespace
       run: sudo k3s kubectl apply -f namespace.yaml
