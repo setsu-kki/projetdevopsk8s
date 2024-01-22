@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-bdd
+  namespace: projetdevopsk8s
+spec:
+  containers:
+  - name: mysql-container
+    image: mysql:latest
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: password
+    - name: MYSQL_DATABASE
+      value: projetdevopsk8s
+    - name: MYSQL_USER
+      value: user
+    - name: MYSQL_PASSWORD
+      value: password
+    ports:
+    - containerPort: 3306

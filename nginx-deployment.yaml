@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: projetdevopsk8s
+spec:
+  replicas: 2  # niveau 2 : Avoir deux conteneurs qui feront tourner l'application, donc 2 replicas pour 2 instances
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: projetdevopsk8s
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 83
+      targetPort: 80
+  type: LoadBalancer # niveau 2 : Avoir un load balancer
