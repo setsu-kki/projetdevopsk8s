@@ -18,10 +18,10 @@ jobs:
         curl -sfL https://get.k3s.io | sh -
         sudo systemctl start k3s
 
-   - name: Set up k3s kubectl
-     uses: azure/setup-kubectl@v1
-     with:
-       kubectl-version: 'latest'
+    - name: Set up k3s kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        kubectl-version: 'latest'
  
     - name: Create Namespace
       run: sudo k3s kubectl apply -f namespace.yaml
