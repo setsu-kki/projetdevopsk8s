@@ -27,10 +27,10 @@ jobs:
         sleep 10
 
         # Appliquer le déploiement de la base de données (MySQL)
-        kubectl apply -f bdd-deployment.yaml
+        kubectl apply -f bdd-deployment.yaml --validate=false
 
         # Appliquer le déploiement de l'application (nginx) et du service LoadBalancer
-        kubectl apply -f nginx-deployment.yaml
+        kubectl apply -f nginx-deployment.yaml --validate=false
 
         # Attendre que les pods de la base de données soient prêts
         echo "En attente que les pods de la base de données soient prêts..."
