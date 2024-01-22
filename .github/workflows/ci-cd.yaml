@@ -22,7 +22,7 @@ jobs:
       uses: azure/setup-kubectl@v1
       with:
         kubectl-version: 'latest'
- 
+
     - name: Create Namespace
       run: sudo k3s kubectl apply -f namespace.yaml
 
@@ -32,14 +32,11 @@ jobs:
     - name: Set Kubernetes Context
       run: sudo k3s kubectl config use-context default
 
+    - name: Wait for K3s to be Ready
+      run: sleep 10
+
     - name: Deploy to K8s Cluster
       run: |
-        # Installation de K3s (s'il n'est pas déjà installé)
-        curl -sfL https://get.k3s.io | sh -
-
-        # Attendre que K3s soit prêt (cela peut prendre quelques instants)
-        sleep 10
-
         # Appliquer le déploiement de la base de données (MySQL)
         sudo k3s kubectl apply -f bdd-deployment.yaml 
 
