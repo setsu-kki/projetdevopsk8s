@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Deploy to K8s Cluster
+      run: |
+        # Installation de K3s (s'il n'est pas déjà installé)
+        curl -sfL https://get.k3s.io | sh -
+
+        # Attendre que K3s soit prêt (cela peut prendre quelques instants)
+        sleep 10
+
+        # Appliquer le déploiement de la base de données (MySQL)
+        kubectl apply -f bdd-deployment.yaml
+
+        # Appliquer le déploiement de l'application (nginx) et du service LoadBalancer
+        kubectl apply -f nginx-deployment.yaml
+
+        # Attendre que les pods de la base de données soient prêts
+        echo "En attente que les pods de la base de données soient prêts..."
+        while [ "$(kubectl get pods -n projetdevopsk8s -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}')" != "True" ]; do
+            sleep 2
+        done
+
+        # Attendre que les pods de l'application soient prêts
+        echo "En attente que les pods de l'application soient prêts..."
+        while [ "$(kubectl get pods -n projetdevopsk8s -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}')" != "True" ]; do
+            sleep 2
+        done
+
+        # Récupérer l'adresse IP du service LoadBalancer
+        LB_IP=$(kubectl get services nginx-service -n projetdevopsk8s -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+        echo "Application déployée avec succès. Accédez à http://$LB_IP:83"
