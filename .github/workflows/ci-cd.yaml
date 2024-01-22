@@ -17,6 +17,15 @@ jobs:
       uses: azure/setup-kubectl@v1
       with:
         version: 'latest'
+    
+    - name: Create Namespace
+      run: sudo k3s kubectl apply -f namespace.yaml
+
+    - name: Display Kubernetes Config
+      run: sudo k3s kubectl config view
+
+    - name: Set Kubernetes Context
+      run: sudo k3s kubectl config use-context default
 
     - name: Deploy to K8s Cluster
       run: |
