@@ -13,11 +13,17 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
+
+    - name: Install K3s
+      run: |
+        curl -sfL https://get.k3s.io | sh -
+        sudo systemctl start k3s
+
+    - name: Set up k3s kubectl
+      uses: rancher/k3s-kubectl-action@v1
       with:
-        version: 'latest'
-    
+      k3s_version: 'latest'
+ 
     - name: Create Namespace
       run: sudo k3s kubectl apply -f namespace.yaml
 
