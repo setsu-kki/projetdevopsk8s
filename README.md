@@ -27,7 +27,7 @@
 <ol>
   <li> Installer K3s </li>
   <li> Déployer les deux conteneurs qui feront tourner l'application </li>
-  <li> Déployer le conteneur qui fera tourner la base données </li>  
+  <li> Déployer le conteneur qui fera tourner la base de données </li>  
   <li> Créer un script qui automatise ces étapes </li>
   <li> Intégrer les étapes dans la pipeline CI/CD GitHub Actions </li>
 </ol>
